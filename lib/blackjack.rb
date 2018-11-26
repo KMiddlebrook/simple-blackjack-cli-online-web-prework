@@ -51,12 +51,10 @@ end
 #####################################################
 
 def runner
-  until card_total > 21
     welcome
     initial_round
     hit?
     end_game
-  end
   binding.pry
 end
 
