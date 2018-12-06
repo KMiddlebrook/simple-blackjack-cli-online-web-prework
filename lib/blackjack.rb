@@ -1,3 +1,4 @@
+require "pry"
 def welcome
   puts "Welcome to the Blackjack Table"
 end
@@ -6,9 +7,8 @@ def deal_card
   rand(1..11)
 end
 
-def display_card_total(Integer)
-  Integer = deal_card + deal_card
-  puts "Your cards add up to #{Integer}"
+def display_card_total(integer)
+  puts "Your cards add up to #{integer}"
 end
 
 def prompt_user
@@ -16,7 +16,7 @@ def prompt_user
 end
 
 def get_user_input
-  gets 
+  gets.strip
 end
 
 def end_game(i)
@@ -24,17 +24,21 @@ def end_game(i)
 end
 
 def initial_round
-  deal_card + deal_card
-  display_card_total(Integer)
+  sum = deal_card + deal_card
+  display_card_total(sum)
+  sum
 end
 
-def hit?(Integer)
+def hit?(card_total)
   prompt_user
-  get_user_input
-  if get_user_input == "h"
-    deal_card
-  elsif get_user_input != "s" or "h"
+  input = get_user_input
+  if input == "h"
+    card_total += deal_card
+  elsif input == "s"
+    card_total
+  else
     invalid_command
+    hit?(card_total)
   end 
 end
 
@@ -47,6 +51,11 @@ end
 #####################################################
 
 def runner
-  # code runner here
+    welcome
+    initial_round
+    hit?(initial_round)
+    end_game
+  binding.pry
 end
-    
+
+runner
